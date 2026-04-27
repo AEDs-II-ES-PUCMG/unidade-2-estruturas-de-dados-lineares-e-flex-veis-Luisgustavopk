@@ -210,11 +210,20 @@ public class App {
      */
     public static void finalizarPedido(Pedido pedido) {
     	
+        if (pedido.getItensDoPedido().length == 0){
+            throw new IllegalArgumentException("Esse pedido não possui produtos");
+        }
+
+        pilhaPedidos.empilhar(pedido);
     	// TODO
     }
     
     public static void listarProdutosPedidosRecentes() {
     	
+            ItemDePedido[] produtosPedidos = pilhaPedidos.consultarTopo().getItensDoPedido();
+            for (int i = 0; i< produtosPedidos.length;i++){
+                produtosPedidos[i].toString();
+            }
     	// TODO
     }
     
