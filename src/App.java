@@ -68,6 +68,12 @@ public class App {
         System.out.print("Digite sua opção: ");
         return Integer.parseInt(teclado.nextLine());
     }
+
+    static int menuTeste(){
+        System.out.println("1 - Inserir letra");
+        System.out.println("0 - Sair");
+        return Integer.parseInt(teclado.nextLine());
+    }
     
     /**
      * Lê os dados de um arquivo-texto e retorna um vetor de produtos. Arquivo-texto no formato
@@ -233,11 +239,25 @@ public class App {
         
 		nomeArquivoDados = "produtos.txt";
         produtosCadastrados = lerProdutos(nomeArquivoDados);
-        
+
+        Fila<Character> listaLetras = new Fila<>();
+        int opc = -1;
+
+        do{
+            opc = menuTeste();
+            if (opc == 1){
+                System.out.println("Digite a letra:");
+                Character letra = teclado.nextLine().charAt(0);
+                listaLetras.enfileirar(letra);
+            }
+        }while(opc!=0);
+        System.out.println("Digite a letra para ser verificada");
+        Character letraTeste = teclado.nextLine().charAt(0);
+        System.out.println(listaLetras.contarRepeticao(letraTeste));
+
         Pedido pedido = null;
         
         int opcao = -1;
-      
         do{
             opcao = menu();
             switch (opcao) {
