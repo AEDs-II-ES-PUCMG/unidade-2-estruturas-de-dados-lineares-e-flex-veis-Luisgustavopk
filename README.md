@@ -4,6 +4,8 @@ Oficinas e atividade pontuada realizada em AEDs II, tendo em vista estruturas de
 
 ## Aluno 
 
-* Nome completo do aluno 1
+* Dupla:
+* Luis Gustavo de Souza Xavier
+* Henrique Pereira Resende Rocha 
 
 
