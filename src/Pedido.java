@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 
 public class Pedido implements Comparable<Pedido> {
 
@@ -16,7 +17,7 @@ public class Pedido implements Comparable<Pedido> {
 	private int idPedido;
 
 	/** Vetor para armazenar os itens do pedido */
-	private ItemDePedido[] itensDePedido;
+	private Lista<ItemDePedido> itensDePedido;
 
 	/** Data de criação do pedido */
 	private LocalDate dataPedido;
@@ -27,6 +28,8 @@ public class Pedido implements Comparable<Pedido> {
 	/** Indica a forma de pagamento do pedido sendo: 1, pagamento à vista; 2, pagamento parcelado */
 	private int formaDePagamento;
 
+	private Iterator<ItemDePedido> iterator;
+
 	/** Construtor do pedido.
 	 *  Deve criar o vetor de itens do pedido,
 	 *  armazenar a data e a forma de pagamento informadas para o pedido.
@@ -34,7 +37,7 @@ public class Pedido implements Comparable<Pedido> {
 	public Pedido(LocalDate dataPedido, int formaDePagamento) {
 
 		idPedido = ultimoID++;
-		itensDePedido = new ItemDePedido[MAX_ITENS_DE_PEDIDO];
+		itensDePedido = new Lista<>();
 		quantItensDePedido = 0;
 		this.dataPedido = dataPedido;
 		this.formaDePagamento = formaDePagamento;
@@ -42,7 +45,7 @@ public class Pedido implements Comparable<Pedido> {
 
 	// TODO: Tarefa 4 - Substituir o vetor itensDePedido por uma Lista<ItemDePedido>
 	//       e adaptar o construtor para inicializá-la.
-	public ItemDePedido[] getItensDoPedido() {
+	public Lista<ItemDePedido> getItensDoPedido() {
 		return itensDePedido;
 	}
 
@@ -50,12 +53,17 @@ public class Pedido implements Comparable<Pedido> {
 
 		// TODO: Tarefa 4 - Substituir o laço abaixo pelo método buscarPor da Lista<E>.
 		ItemDePedido itemDePedidoProcurado = new ItemDePedido(produto, 0, 0.1);
-		for (int i = 0; i < quantItensDePedido; i++) {
-			if (itensDePedido[i].equals(itemDePedidoProcurado)) {
-				return itensDePedido[i];
-			}
+	
+		CriterioDeBuscaPorDescricao criterioDeBuscaPorDescricao = new CriterioDeBuscaPorDescricao();
+		ItemDePedido item = itensDePedido.buscarPor(criterioDeBuscaPorDescricao, itemDePedidoProcurado);
+		if (item != null){
+			return item;
 		}
+
 		return null;
+
+
+
 	}
 
 	/**
@@ -72,7 +80,8 @@ public class Pedido implements Comparable<Pedido> {
 			itemDePedido.setQuantidade(quantidade + itemDePedido.getQuantidade());
 			return true;
 		} else if (quantItensDePedido < MAX_ITENS_DE_PEDIDO) {
-			itensDePedido[quantItensDePedido++] = new ItemDePedido(novo, quantidade, novo.valorDeVenda());
+			ItemDePedido itemNovo = new ItemDePedido(novo, quantidade, novo.valorDeVenda());
+			itensDePedido.inserirFinal(itemNovo);
 			return true;
 		}
 		return false;
@@ -91,6 +100,9 @@ public class Pedido implements Comparable<Pedido> {
 		for (int i = 0; i < quantItensDePedido; i++) {
 			valorPedido += itensDePedido[i].getQuantidade() * itensDePedido[i].getPrecoVenda();
 		}
+		
+	
+		itensDePedido.somarMultiplicacoes( );
 
 		if (formaDePagamento == 1) {
 			valorPedido = valorPedido * (1.0 - DESCONTO_PG_A_VISTA);
@@ -116,8 +128,10 @@ public class Pedido implements Comparable<Pedido> {
 
 		stringPedido.append("Pedido com " + quantItensDePedido + " itens.\n");
 		stringPedido.append("Itens de pedido no pedido:\n");
-		for (int i = 0; i < quantItensDePedido; i++) {
-			stringPedido.append(itensDePedido[i].toString() + "\n");
+		iterator = itensDePedido.iterator();
+		while (iterator.hasNext()) {
+			stringPedido.append(iterator.next().toString() + "\n");
+			
 		}
 
 		stringPedido.append("Pedido pago ");

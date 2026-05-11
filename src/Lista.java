@@ -82,6 +82,19 @@ public class Lista<E> implements Iterable<E> {
 
     // Tarefa 1
     public E buscarPor(Comparator<E> criterioDeBusca, E item) {
+
+             if (vazia()) throw new IllegalStateException("Lista vazia!");
+             
+             Celula<E> atual = cabeca.getProximo();
+             while (atual != null) {
+                if (criterioDeBusca.compare(item, (E) atual) == 0){
+                    return item;
+                }
+                atual = atual.getProximo();
+             }
+
+             return null;
+
         // TODO: Percorrer sequencialmente a lista e retornar o primeiro elemento
         //       equivalente a item segundo o criterioDeBusca (compare == 0).
         //       Retornar null caso nenhum elemento seja encontrado.
@@ -89,6 +102,19 @@ public class Lista<E> implements Iterable<E> {
 
     // Tarefa 2
     public double somarMultiplicacoes(Function<E, Double> extratorValor, Function<E, Integer> extratorFator) {
+
+         if (vazia()) throw new IllegalStateException("Lista vazia!");
+
+          double soma = 0;
+    
+          Celula<E> atual = cabeca.getProximo();
+             while (atual != null) {
+               soma += extratorValor.apply((E) atual) * extratorFator.apply((E) atual);
+                atual = atual.getProximo();
+             }
+         
+        return soma;
+
         // TODO: Para cada elemento, extrair o valor (extratorValor) e o fator (extratorFator),
         //       multiplicá-los e acumular no somatório final.
         //       Lançar IllegalStateException se a lista estiver vazia.
@@ -96,8 +122,19 @@ public class Lista<E> implements Iterable<E> {
 
     // Tarefa 3
     public Lista<E> filtrar(Predicate<E> condicional) {
-        // TODO: Criar e retornar uma nova lista contendo apenas os elementos
-        //       para os quais condicional.test() retorna true.
-        //       Lançar IllegalStateException se a lista estiver vazia.
+
+         if (vazia()) throw new IllegalStateException("Lista vazia!");
+
+        Lista<E> novaLista = new Lista<>();
+
+         Celula<E> atual = cabeca.getProximo();
+             while (atual != null) {
+                if (condicional.test((E) atual)) {
+                    novaLista.inserirInicio((E) atual);
+                }
+                atual = atual.getProximo();
+             }
+
+             return novaLista;
     }
 }
