@@ -57,4 +57,26 @@ public class Pilha<E> {
 		// TODO
 		return null;
 	}
+
+	void imprimir() {
+		if(vazia()){
+			throw new NoSuchElementException("A pilha está vazia!");
+		}
+		Celula<E> aux = topo;
+		while(aux!=fundo){
+			System.out.println(aux.getItem());
+			aux = aux.getProximo();
+		}
+
+	}
+	void imprime_certo(){
+		Celula<E> atual = topo;
+		certo(atual);
+	}
+	void certo(Celula<E> atual){
+		if(atual!=fundo){
+			certo(atual.getProximo());
+			System.out.println(atual.getItem());
+		}
+	}
 }
