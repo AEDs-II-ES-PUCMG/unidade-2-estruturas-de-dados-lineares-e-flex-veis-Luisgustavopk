@@ -21,7 +21,11 @@ public class App {
 
     /** Pilha de pedidos */
     static Pilha<Pedido> pilhaPedidos = new Pilha<>();
-        
+    
+    /** Fila de pedidos */
+    static Fila<Pedido> filaPedidos = new Fila<>();
+
+
     static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -221,6 +225,7 @@ public class App {
         }
 
         pilhaPedidos.empilhar(pedido);
+        filaPedidos.enfileirar(pedido);
     	// TODO
     }
     
@@ -240,37 +245,41 @@ public class App {
 		nomeArquivoDados = "produtos.txt";
         produtosCadastrados = lerProdutos(nomeArquivoDados);
 
-        Fila<Character> listaLetras = new Fila<>();
-        int opc = -1;
-
-        do{
-            opc = menuTeste();
-            if (opc == 1){
-                System.out.println("Digite a letra:");
-                Character letra = teclado.nextLine().charAt(0);
-                listaLetras.enfileirar(letra);
-            }
-        }while(opc!=0);
-        System.out.println("Digite a letra para ser verificada");
-        Character letraTeste = teclado.nextLine().charAt(0);
-        System.out.println(listaLetras.contarRepeticao(letraTeste));
-
-        Pedido pedido = null;
+        // Fila<Character> filaLetras = new Fila<>();
+        // int opc = -1;
         
-        int opcao = -1;
-        do{
-            opcao = menu();
-            switch (opcao) {
-                case 1 -> listarTodosOsProdutos();
-                case 2 -> mostrarProduto(localizarProduto());
-                case 3 -> mostrarProduto(localizarProdutoDescricao());
-                case 4 -> pedido = iniciarPedido();
-                case 5 -> finalizarPedido(pedido);
-                case 6 -> listarProdutosPedidosRecentes();
-            }
-            pausa();
-        }while(opcao != 0);       
+        // do{
+        //     opc = menuTeste();
+        //     if (opc == 1){
+        //         System.out.println("Digite a letra:");
+        //         Character letra = teclado.nextLine().charAt(0);
+        //         filaLetras.enfileirar(letra);
+        //     }
+        // }while(opc!=0);
+        // System.out.println("Digite a letra para ser verificada");
+        // Character letraTeste = teclado.nextLine().charAt(0);
+        // System.out.println(filaLetras.contarRepeticao(letraTeste));
 
+        // Pedido pedido = null;
+        
+        // int opcao = -1;
+        // do{
+        //     opcao = menu();
+        //     switch (opcao) {
+        //         case 1 -> listarTodosOsProdutos();
+        //         case 2 -> mostrarProduto(localizarProduto());
+        //         case 3 -> mostrarProduto(localizarProdutoDescricao());
+        //         case 4 -> pedido = iniciarPedido();
+        //         case 5 -> finalizarPedido(pedido);
+        //         case 6 -> listarProdutosPedidosRecentes();
+        //     }
+        //     pausa();
+        // }while(opcao != 0);       
+
+
+        System.out.println(pilhaPedidos.consultarTopo());
+        
+        
         teclado.close();    
     }
 }
